@@ -32,6 +32,21 @@
     </select>
     <br><br>
     <p class="js-billCycle">Billing Cycle : </p>
+
+    <label for="previous">Previous Reading : </label>
+    <br>
+    <input type="text" placeholder="Last month reading" class="js-previous" id="previous" name="previous">
+    <br><br>
+    <br><br>
+    <label for="current">Current Reading : </label>
+    <br>
+    <input type="text" placeholder="Current month reading" class="js-current" id="current" name="current">
+    <br><br>
+    <br><br>
+    <button onclick="calculate()">Calculate</button>
+    <div class="showCalc">
+
+    </div>
     <script src="/script/billpage.js"></script>
 </body>
 </html>
