@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Main Page</title>
+    <link rel="stylesheet" href="/style/mainpage.css">
 </head>
 <body>
-    <h1>Welcome</h1>
-    <a href="billpage.html">Create Bill</a>
-    <br>
-    <a href="addClient.html">Add Client</a>
-    <br>
-    <a href="deleteClient.html">Delete Client</a>
-    <br>
-    <br><br><br><br><br><br><br><br><br><br>
-    <p>Bhai yeh button mat click karna</p>
-    <button onclick="
-        localStorage.removeItem('clients');
-    ">Reset</button>
+    <div class="main-div">
+        <div>
+            <h1>Welcome</h1>
+        </div>
+        <div class="link-div">
+            <a href="billpage.html">Create Bill</a>
+            <br>
+            <a href="addClient.html">Add Client</a>
+            <br>
+            <a href="deleteClient.html">Delete Client</a>
+            <br><br>
+            <p>Bhai yeh button mat click karna</p>
+            <button onclick="localStorage.removeItem('clients');">Reset</button>
+        </div>
+    </div>
 </body>
 </html>

@@ -5,8 +5,8 @@ function updateCycle() {
 
     var startDate = new Date(year, selectedMonth - 1, 1);
     var endDate = new Date(year, selectedMonth, 0);
-
     document.querySelector('.js-billCycle').textContent = `Billing Cycle : ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function calculate() {
+
     let PrevIp = Number(document.querySelector('.js-previous').value);
     let CurrIp = Number(document.querySelector('.js-current').value);
     var clientMF = document.getElementById('client-name').value;
@@ -46,9 +47,46 @@ function calculate() {
     Payment = Number(Payment.toFixed(2));
     console.log(UnitProduced);
     console.log(Payment);
+    let billNum = genCode(mfValue);
+    for (var i = 0; i < clientID.length; i++) {
+        if (clientID[i].name === clientName) {
+            clientID[i].billNo.push(billNum);
+            break;
+        }
+    }
+    localStorage.setItem('clients', JSON.stringify(clientID));
     document.querySelector('.showCalc').innerHTML = `
     <p>MF value for ${clientName} : ${mfValue} </p>
     <p>Total Units Produced : ${UnitProduced} </p>
     <p>Total Amount Generated : ${Payment} </p>
+    <p>Bill Number : ${billNum} </p>
     `
+    //let v = mfValue.billNo.length;
+    console.log(clientID);
+    /*
+    for(i = 0;i<v;i++ )
+    {
+    console.log(mfValue.billNo[i])
+    }
+    */
 };
+
+function genCode(Cname){
+    var code = Math.floor(Math.random()*10000);
+    code = String(code).padStart(5, '0');
+    return code
+}
+/*
+function getBillByName(clientName) {
+    for (var i = 0; i < clientID.length; i++) {
+        if (clientID[i].name === clientName) {
+            return clientID[i].billNo;
+        }
+    }
+    return null;
+}
+
+*/
+
+
+// to create a history with bill number

@@ -2,11 +2,11 @@ function addClient() {
     var clientName = document.getElementById("clientName").value;
     var gstNumber = document.getElementById("gstNumber").value;
     var mfValue = document.getElementById("mfValue").value;
-
-    var client = {
+     var client = {
         name: clientName,
         gst: gstNumber,
-        mf : mfValue
+        mf : mfValue,
+        billNo : []
     };
 
     var clients = JSON.parse(localStorage.getItem("clients")) || [];
