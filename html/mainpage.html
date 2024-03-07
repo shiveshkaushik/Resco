@@ -8,19 +8,36 @@
 </head>
 <body>
     <div class="main-div">
-        <div>
-            <h1>Welcome</h1>
-        </div>
         <div class="link-div">
+            <div>
+                <h1>Welcome</h1>
+            </div>
+            <br>
+            <br>
             <a href="billpage.html">Create Bill</a>
             <br>
             <a href="addClient.html">Add Client</a>
             <br>
             <a href="deleteClient.html">Delete Client</a>
+            <br>
+            <a href="billHistory.html">Bill History</a>
             <br><br>
             <p>Bhai yeh button mat click karna</p>
-            <button onclick="localStorage.removeItem('clients');">Reset</button>
+            <button onclick="resetData()">Reset</button>
         </div>
     </div>
+
+    <script>
+        console.log(localStorage.getItem('clients'));
+        console.log(localStorage.getItem('billHistory'));
+        console.log(localStorage.getItem('lastBillNumber'));
+        function resetData() {
+            localStorage.removeItem('clients');
+            localStorage.removeItem('billHistory');
+            localStorage.removeItem('lastBillNumber');
+            location.reload();
+        }
+    </script>
 </body>
 </html>
+

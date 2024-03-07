@@ -1,10 +1,13 @@
+var endDate;
+var startDate;
+
 function updateCycle() {
     var monthSelect = document.getElementById("monthSelect");
     var selectedMonth = monthSelect.options[monthSelect.selectedIndex].value;
     var year = new Date().getFullYear();
 
-    var startDate = new Date(year, selectedMonth - 1, 1);
-    var endDate = new Date(year, selectedMonth, 0);
+    startDate = new Date(year, selectedMonth - 1, 1);
+    endDate = new Date(year, selectedMonth, 0);
     document.querySelector('.js-billCycle').textContent = `Billing Cycle : ${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
 
 }
@@ -22,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function calculate() {
-
     let PrevIp = Number(document.querySelector('.js-previous').value);
     let CurrIp = Number(document.querySelector('.js-current').value);
     var clientMF = document.getElementById('client-name').value;
@@ -37,56 +39,59 @@ function calculate() {
         }
         return null;
     }
+    var lastBillNumber = parseInt(localStorage.getItem('lastBillNumber')) || 0;
     var clientName = clientMF;
     var mfValue = getMfValueByName(clientName);
     let UnitDifference = CurrIp - PrevIp;
     let UnitProduced = mfValue * UnitDifference;
     let PerUnitCost = Number(4.15);
-    let Payment = Number(UnitProduced*PerUnitCost);
+    let Payment = Number(UnitProduced * PerUnitCost);
     UnitProduced = Number(UnitProduced.toFixed(2));
     Payment = Number(Payment.toFixed(2));
     console.log(UnitProduced);
     console.log(Payment);
-    let billNum = genCode(mfValue);
+
+    // Incrementing bill number
+    lastBillNumber++;
+    localStorage.setItem('lastBillNumber', lastBillNumber);
+
+    // Format bill number as 5 digits with leading zeros
+    let billNum = String(lastBillNumber).padStart(5, '0');
+
     for (var i = 0; i < clientID.length; i++) {
         if (clientID[i].name === clientName) {
             clientID[i].billNo.push(billNum);
             break;
         }
     }
+    let copyendDate = new Date(endDate);
+    copyendDate.setDate(copyendDate.getDate() + 1);
+    let bill = {
+        companyName: clientName,
+        billNumber: billNum,
+        amount: Payment,
+        InvDate: copyendDate.toISOString().slice(0, 10),
+        sDate : startDate,
+        eDate : endDate,
+        unitS : UnitProduced,
+        mfV : mfValue,
+        puC : PerUnitCost
+    };
+
+    // Store bill history object in an array
+    let billHistory = JSON.parse(localStorage.getItem("billHistory")) || [];
+    billHistory.push(bill);
+    localStorage.setItem("billHistory", JSON.stringify(billHistory));
+
     localStorage.setItem('clients', JSON.stringify(clientID));
     document.querySelector('.showCalc').innerHTML = `
     <p>MF value for ${clientName} : ${mfValue} </p>
     <p>Total Units Produced : ${UnitProduced} </p>
     <p>Total Amount Generated : ${Payment} </p>
     <p>Bill Number : ${billNum} </p>
-    `
-    //let v = mfValue.billNo.length;
+    `;
     console.log(clientID);
-    /*
-    for(i = 0;i<v;i++ )
-    {
-    console.log(mfValue.billNo[i])
-    }
-    */
+    console.log(bill);
+    var abc = localStorage.getItem('billHistory');
+    console.log(abc);
 };
-
-function genCode(Cname){
-    var code = Math.floor(Math.random()*10000);
-    code = String(code).padStart(5, '0');
-    return code
-}
-/*
-function getBillByName(clientName) {
-    for (var i = 0; i < clientID.length; i++) {
-        if (clientID[i].name === clientName) {
-            return clientID[i].billNo;
-        }
-    }
-    return null;
-}
-
-*/
-
-
-// to create a history with bill number
